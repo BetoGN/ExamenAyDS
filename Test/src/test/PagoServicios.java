@@ -30,6 +30,7 @@ public class PagoServicios extends javax.swing.JFrame {
         boton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(250, 150));
 
         boton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/naturgy.png"))); // NOI18N
         boton1.setPreferredSize(new java.awt.Dimension(150, 150));
