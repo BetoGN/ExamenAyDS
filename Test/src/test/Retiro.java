@@ -18,7 +18,7 @@ public class Retiro extends javax.swing.JFrame {
     public Retiro() {
         initComponents();
          
-        //saldoActual= CONSULTA A LA BASE DE DATOS EL SALDO ACTUAL DEL USUARIO;
+        //saldoActual= CONSULTA A LA BASE DE DATOS DEL SALDO ACTUAL DEL USUARIO;
         saldoActual=500;
         etiquetaSaldo.setText(String.valueOf(saldoActual));
     }
@@ -113,13 +113,19 @@ public class Retiro extends javax.swing.JFrame {
         double cantidadRetiro=0;
         
         
-        etiquetaSaldo.setText(String.valueOf(saldoActual));
+        //etiquetaSaldo.setText(String.valueOf(saldoActual));
         cantidadRetiro = Double.parseDouble(cantidadRetiroTF.getText());
         
         if (cantidadRetiro > saldoActual){
             JOptionPane.showMessageDialog(null, "El saldo en la cuenta no es suficiente", "Alerta", JOptionPane.ERROR_MESSAGE); 
         }else{
+            if(cantidadRetiro<0){
+                JOptionPane.showMessageDialog(null, "Ingresa una cantidad válida", "Alerta", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }else{
             JOptionPane.showMessageDialog(null, "El saldo remanente es: "+(saldoActual-cantidadRetiro), "Alerta", JOptionPane.INFORMATION_MESSAGE); 
+               //Actualizar saldo en la base de datos 
+            } 
 
         }
         
