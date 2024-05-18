@@ -43,11 +43,21 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setText("Ingresa tu tarjeta de débito");
 
         tarjetaTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tarjetaTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tarjetaTFActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Ingresa tu NIP");
 
         nipTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        nipTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nipTFActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         jButton1.setText("Ingresar");
@@ -109,6 +119,15 @@ public class Login extends javax.swing.JFrame {
         this.setVisible(false);
         new Principal().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tarjetaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarjetaTFActionPerformed
+        // TODO add your handling code here:
+        tarjetaTF.setText("hOLO");
+    }//GEN-LAST:event_tarjetaTFActionPerformed
+
+    private void nipTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nipTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nipTFActionPerformed
 
     /**
      * @param args the command line arguments
