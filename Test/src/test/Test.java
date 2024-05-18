@@ -24,7 +24,6 @@ public class Test {
         try {
 
             Class.forName("org.sqlite.JDBC");
-
             c = DriverManager.getConnection("dbc:sqlite:db\\Examen.db");
 
         }catch ( Exception e ) {
