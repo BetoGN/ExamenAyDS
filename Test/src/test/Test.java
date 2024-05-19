@@ -8,6 +8,7 @@ package test;
 
 import java.sql.*;
 import test.clases.TarjetaCredito;
+import test.MetodosPrueba.Retirar;
 
 /**
  *
@@ -50,6 +51,8 @@ public class Test {
         
         //TarjetaCredito tarCre = new TarjetaCredito("5");
         //tarCre.actualizarDeuda(30000.0);
+        
+        Retirar ret = new Retirar(8500.0);
         
     }
     
