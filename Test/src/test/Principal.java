@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package test;
+import test.clases.Cliente;
 
 /**
  *
@@ -13,7 +14,15 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    
+    Cliente cliente;
+    
     public Principal() {
+        initComponents();
+    }
+    
+    public Principal(Cliente cliente) {
+        this.cliente = cliente;
         initComponents();
     }
 
