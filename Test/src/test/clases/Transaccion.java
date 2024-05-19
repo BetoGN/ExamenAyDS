@@ -1,22 +1,38 @@
 
 import java.util.Date;
-import java.time.LocalDate;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 /**
  * Clase que representa una transacción.
  */
 public class Transaccion {
     // Atributos
-    private int cantidad;
+    private double cantidad;
     private Date fecha;
     private boolean estatus;
-    private boolean Tipo;
+    private boolean tipo;
+    
+    //Definimos la dirección en la cuál se encuentra la base de datos
+    String url = "jdbc:sqlite:C:\\Users\\abrah\\Documents\\0_Examen_ADS\\ExamenAyDS\\Test\\src\\db\\Examen.db";
+    //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
+    Connection connect;
 
     // Constructor
-    public Transaccion(int cantidad, Date fecha) {
+    public Transaccion() {
+        this.estatus = false;
+    }
+    
+    // Constructor
+    public Transaccion(int cantidad, Date fecha, boolean tipo) {
         this.cantidad = cantidad;
         this.fecha = fecha;
-        this.estatus = obtenerEstatus(cantidad, fecha);
+        this.estatus = false;
+        this.tipo = 
     }
 
     // Método para actualizar el saldo en una cuenta de débito
