@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package test;
 
 import javax.swing.JOptionPane;
@@ -18,7 +15,6 @@ public class Retiro extends javax.swing.JFrame {
     public Retiro() {
         initComponents();
          
-        //saldoActual= CONSULTA A LA BASE DE DATOS DEL SALDO ACTUAL DEL USUARIO;
         //saldoActual=consultarSaldo();
         etiquetaSaldo.setText(String.valueOf(saldoActual));
     }
