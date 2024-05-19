@@ -13,11 +13,11 @@ import javax.swing.JOptionPane;
  */
 public class TarjetaCredito {
     //Atributos pertenecientes a la clase
-    String numCuenta;
-    String numTarjeta;
-    String expiracion;
-    double creditoTotal;
-    double deuda;
+    private String numCuenta;
+    private String numTarjeta;
+    private String expiracion;
+    private double creditoTotal;
+    private double deuda;
     
     //Definimos la dirección en la cuál se encuentra la base de datos
     String url = "jdbc:sqlite:D:\\Documents\\Semestre 2024-2\\AnalisisYDiseñoDeSistemas\\Examen\\Test\\src\\db\\Examen.db";
@@ -30,11 +30,11 @@ public class TarjetaCredito {
        // Constructor de la clase TarjetaCredito
     public TarjetaCredito(String cuenta) throws ClassNotFoundException{
         // Métodos encapsulados para inicialización de atributos:
-        numCuenta = cuenta;
-        numTarjeta = obtenerTarjeta(numCuenta);
-        expiracion = obtenerExpiracion(numTarjeta);
-        creditoTotal = obtenerCreditoTotal(numTarjeta);
-        deuda = obtenerDeuda(numTarjeta);
+        this.numCuenta = cuenta;
+        this.numTarjeta = obtenerTarjeta(numCuenta);
+        this.expiracion = obtenerExpiracion(numTarjeta);
+        this.creditoTotal = obtenerCreditoTotal(numTarjeta);
+        this.deuda = obtenerDeuda(numTarjeta);
     }
 
     // Método para actualizar la deuda en la tarjeta de crédito
