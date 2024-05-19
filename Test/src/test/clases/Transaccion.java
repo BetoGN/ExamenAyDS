@@ -1,5 +1,6 @@
 
 import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Clase que representa una transacción.
@@ -9,6 +10,7 @@ public class Transaccion {
     private int cantidad;
     private Date fecha;
     private boolean estatus;
+    private boolean Tipo;
 
     // Constructor
     public Transaccion(int cantidad, Date fecha) {
