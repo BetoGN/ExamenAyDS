@@ -43,29 +43,32 @@ public class TarjetaCredito {
     
 
     
-    public void actualizarDeuda(double monto) throws ClassNotFoundException{
-        //throw new UnsupportedOperationException("Not supported yet.");        
+    public void actualizarDeuda(double monto) throws ClassNotFoundException {
+    try {
         Class.forName("org.sqlite.JDBC");
-              
-       try{
-            connect = DriverManager.getConnection(url);
-            
-            if(connect != null){
-             System.out.println("Clase TarjetaCredito se ha conectado a la base de datos");
-            }
-        
-            PreparedStatement st = connect.prepareStatement("UPDATE TarjetaCredito SET deuda = " + monto
-                                                                + "WHERE idTarjeta = '" +numTarjeta+"'");
-            st.executeQuery();
-            
-            System.out.println("La deuda en la tarjeta es: " + String.valueOf(deuda));
-            
-            double comp = obtenerDeuda(numTarjeta);
-            
-        }catch(Exception x){
-            JOptionPane.showMessageDialog(null, x.getMessage().toString());
+        connect = DriverManager.getConnection(url);
+
+        String query = "UPDATE TarjetaCredito SET deuda = ? WHERE idTarjeta = ?";
+        PreparedStatement statement = connect.prepareStatement(query);
+        statement.setDouble(1, monto);
+        statement.setString(2, numTarjeta);
+
+        // Execute the update query
+        int rowsAffected = statement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Deuda actualizada correctamente.");
+        } else {
+            System.out.println("No se pudo actualizar la deuda.");
         }
+
+        // Close the statement and connection
+        statement.close();
+       
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage().toString());
     }
+}
+
 
     private String obtenerTarjeta(String numCu) throws ClassNotFoundException {
         ResultSet result = null;

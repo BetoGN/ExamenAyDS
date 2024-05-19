@@ -48,8 +48,8 @@ public class Test {
 //            System.out.println(e.getMessage());
         //}
         
-        TarjetaCredito tarCre = new TarjetaCredito("5");
-        tarCre.actualizarDeuda(0.0);
+        //TarjetaCredito tarCre = new TarjetaCredito("5");
+        //tarCre.actualizarDeuda(5000.0);
         
     }
     
