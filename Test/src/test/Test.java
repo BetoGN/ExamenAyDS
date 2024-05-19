@@ -7,6 +7,7 @@
 package test;
 
 import java.sql.*;
+import test.clases.TarjetaCredito;
 
 /**
  *
@@ -17,24 +18,38 @@ public class Test {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
     
-        Connection c = null;
-
-        try {
-
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("dbc:sqlite:db\\Examen.db");
-
-        }catch ( Exception e ) {
-
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-
-            System.exit(0);
-
-        }
-
-    //System.out.println("database successfully created");
+        
+        
+//        Class.forName("org.sqlite.JDBC");
+//
+//         
+//        String url = "jdbc:sqlite:D:\\Documents\\Semestre 2024-2\\AnalisisYDiseñoDeSistemas\\Examen\\Test\\src\\db\\Examen.db";
+//
+//        try {
+//            // Create a connection to the database
+//            Connection conn = DriverManager.getConnection(url);
+//
+//            if (conn != null) {
+//                DatabaseMetaData metaData = conn.getMetaData();
+//                ResultSet resultSet = metaData.getTables(null, null, "%", new String[]{"TABLE"});
+//
+//                // Iterate through the result set and print table names
+//                while (resultSet.next()) {
+//                    System.out.println(resultSet.getString("TABLE_NAME"));
+//                }
+//
+//                // Close the result set and connection
+//                resultSet.close();
+//                conn.close();
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+        //}
+        
+        TarjetaCredito tarCre = new TarjetaCredito("5");
+        tarCre.actualizarDeuda(0.0);
         
     }
     
