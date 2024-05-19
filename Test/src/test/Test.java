@@ -49,7 +49,7 @@ public class Test {
         //}
         
         //TarjetaCredito tarCre = new TarjetaCredito("5");
-        //tarCre.actualizarDeuda(5000.0);
+        //tarCre.actualizarDeuda(35000.0);
         
     }
     

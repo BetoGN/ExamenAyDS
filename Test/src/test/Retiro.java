@@ -19,7 +19,7 @@ public class Retiro extends javax.swing.JFrame {
         initComponents();
          
         //saldoActual= CONSULTA A LA BASE DE DATOS DEL SALDO ACTUAL DEL USUARIO;
-        saldoActual=500;
+        //saldoActual=consultarSaldo();
         etiquetaSaldo.setText(String.valueOf(saldoActual));
     }
 
