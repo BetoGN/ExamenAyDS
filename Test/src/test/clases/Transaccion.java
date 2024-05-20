@@ -1,104 +1,55 @@
 package test.clases;
 
+import java.util.Calendar;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
  * Clase que representa una transacción.
  */
-
-/*
-    private idTransaccion
-    ---constructor-----
-    crear una nueva transaccion(tipo, cantidad)             
-        conectarse a la base de datos
-        guardas la transaccion y te va crear un idTransaccion y lo guardas en el atributo privado de la clase
-
-    ----metodo actualizar saldo----
-    actualizarSaldo(CuentaDebito cuenta)
-        cuenta.setSaldo(this.cantidad) (este metodo viene de cuentaDebito)
-        guardas el idTransaccion y el idCuenta en la tabla q los relaciona
-        
-*/
-
 public class Transaccion {
     // Atributos
-    private int idTransaccion;
-    private int cantidad;
-    private Date fecha;
-    private int tipo;
+    private double cantidad;
+    private Calendar fechaHora;
     private boolean estatus;
-
+    private boolean tipo;
+    
+    //Definimos la dirección en la cuál se encuentra la base de datos
+    String url = "jdbc:sqlite:C:\\Users\\abrah\\Documents\\0_Examen_ADS\\ExamenAyDS\\Test\\src\\db\\Examen.db";
+    
+    //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
+    Connection connect;
+    
+    
     // Constructor
-    public Transaccion(int monto, int tipo) throws ClassNotFoundException {
-        this.cantidad = monto;
-        this.fecha = new Date();
+    public Transaccion(double cantidad, boolean tipo) {
+        // Se obtiene la fecha y hora actual 
+        Calendar fecha = Calendar.getInstance();
+        this.cantidad = cantidad;
+        this.fechaHora = fecha;
+        this.estatus = false;
         this.tipo = tipo;
+
+        // Se prepara el dato de fecha para insertar en la BD
+        int hora, minuto, segundo, mes, ano, dia;
+    
+        hora = fecha.get(Calendar.HOUR_OF_DAY);
+        minuto = fecha.get(Calendar.MINUTE);
+        segundo = fecha.get(Calendar.SECOND); 
+
+        ano = fecha.get(Calendar.YEAR); 
+        mes = fecha.get(Calendar.MONTH) + 1; 
+        dia = fecha.get(Calendar.DATE);
         
-        String currentDir = System.getProperty("user.dir");    
-        String url = "jdbc:sqlite:"+currentDir+"/src/db/Examen.db";
-        //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
-        Connection connect;
-        // Variable para almacenar el resultado de la consulta SQL "en crudo"
-        ResultSet result;
-        // Variable para almacenar el resultado de la consulta
-        int cantidadActual = 0;
-
-        // Cargamos dinámicamente la clase del driver para SQLite
-        Class.forName("org.sqlite.JDBC");
-
-        try{
-            // Establecemos conexión con la base de datos
-            connect = DriverManager.getConnection(url);
-            
-            // Verificamos que la conexión sea exitosa
-            if(connect != null){
-             System.out.println("Clase Cajero se ha conectado a la base de datos");
-            }
-            
-            // Creación de un objeto PreparedStatement que representa una sentencia SQL precompilada
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Transaccion (monto, fechaHora, tipo) VALUES (?, ?, ?)");
-            
-            statement.setDouble(1, monto);
-            statement.setString(2, String.valueOf(this.fecha));
-            statement.setString(3, String.valueOf(tipo));
-            
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Monto actualizada correctamente.");
-                
-                PreparedStatement st = connect.prepareStatement("SELECT idTransaccion from TRANSACCION ORDER BY idTransaccion DESC LIMIT 1");
-                result = st.executeQuery();
-                while(result.next()){
-                    this.idTransaccion = result.getInt("numCuenta");
-                    System.out.println(this.idTransaccion);
-                }
-            } else {
-                System.out.println("No se pudo actualizar el monto.");
-            }
-            
-            statement.close();
-        } catch(Exception x){
-            // Retornamos el error que pueda llegar a atrapar el compilador
-            JOptionPane.showMessageDialog(null, x.getMessage().toString());
-        }
-    }
-
-    // Método para actualizar el saldo en una cuenta de débito
-    private void actualizarSaldo(CuentaDebito cuenta) {
-        cuenta.setSaldo(this.cantidad);
+        // Se formatea la fehca y hora para su almacenamiento en BD
+        String fechaHora = String.format("%04d-%02d-%02d %02d:%02d:%02d", 
+                                         ano, mes, dia, hora, minuto, segundo);
         
-        String currentDir = System.getProperty("user.dir");    
-        String url = "jdbc:sqlite:"+currentDir+"/src/db/Examen.db";
-        //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
-        Connection connect;
         try {
             // Cargamos dinámicamente la clase del driver para SQLite
             Class.forName("org.sqlite.JDBC");
@@ -106,42 +57,106 @@ public class Transaccion {
             // Establecemos conexión con la base de datos
             connect = DriverManager.getConnection(url);
             
-            // Guardamos la sentencia SQL en una variable string
-            // Creación de un objeto PreparedStatement que representa una sentencia SQL precompilada
-            PreparedStatement statement = connect.prepareStatement("INSERT INTO Cuenta_Transaccion (idCuenta_CuTra, idTransaccion_CuTra) VALUES (?, ?)");
-            
-            statement.setDouble(1, this.idTransaccion);
-            statement.setString(2, );
-            
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Monto actualizada correctamente.");
-            } else {
-                System.out.println("No se pudo actualizar el monto.");
+            // Verificamos que la conexión sea exitosa
+            if(connect != null){
+                System.out.println("Clase Transaccion se ha conectado a la base de datos");
             }
             
-            statement.close();
-           
+            // Consulta de inserción a la BD
+            String sql = "INSERT INTO Transaccion(monto, fechaHora, tipo) VALUES (?, ?, ?)";
+            PreparedStatement registro = connect.prepareStatement(sql);
+            registro.setDouble(1, cantidad);
+            registro.setString(2, fechaHora);
+            registro.setInt(3, tipo ? 1 : 0); // Convertimos booleano a 1 o 0
+
+            // Se ejecuta la inserción de los datos en la BD
+            registro.executeUpdate();
+            // Poner en true el estatus de la transacción
+            this.estatus = true;
+            System.out.println("Se inserto correctamente: " + registro);
+            
         } catch (Exception e) {
             // Retornamos el error que pueda llegar a atrapar el compilador
             JOptionPane.showMessageDialog(null, e.getMessage().toString());
+        } finally {
+            // Desconectar de la BD
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar la conexión: " + ex.getMessage());
+            }
         }
     }
+ 
+    // Método para actualizar el saldo en una cuenta de débito
+    private void actualizarSaldo(CuentaDebito cuenta) {
+        try {
+            double saldoActual = 0.0;
+            double saldoNuevo = 0.0;
+            // Cargamos dinámicamente la clase del driver para SQLite
+            Class.forName("org.sqlite.JDBC");
+            
+            ResultSet rs = null;
+            // Establecemos conexión con la base de datos
+            connect = DriverManager.getConnection(url);
+            
+            // Verificamos que la conexión sea exitosa
+            if(connect != null){
+                System.out.println("Clase Transaccion se ha conectado a la base de datos");
+            }
+            
+            // Consultar saldo actual de la cuenta
+            String sql = "SELECT saldo FROM Cuenta WHERE numCuenta = ?";
+            PreparedStatement registro = connect.prepareStatement(sql);
+            registro.setString(1, cuenta.getNumCuenta());
+            rs = registro.executeQuery();
+            
+            // Se guarda el saldo actual para operar con el 
+            if(rs.next()) {
+                saldoActual = rs.getDouble("saldo");
+            }
+            
+            // El monto es suamdo a la cuenta si tipo = true, en caso contrario
+            // se resta
+            if(this.tipo) {
+                saldoNuevo = saldoActual + this.cantidad;
+            } else {
+                saldoNuevo = saldoActual - this.cantidad;
+            }
+            
+            // Se actualiza en la BD el saldo nuevo
+            sql = "UPDATE Cuenta SET saldo = ? WHERE numCuenta = ?";
+            registro = connect.prepareStatement(sql);
+            registro.setDouble(1, saldoNuevo);
+            registro.setString(2, cuenta.getNumCuenta());
 
-    // Método para obtener el estatus de la transacción
-    private boolean obtenerEstatus(int cantidad, Date fecha) {
-        // Aquí se implementaría la lógica para determinar el estatus de la transacción.
-        // Por ahora, siempre devuelve true.
-        return true;
-    }
+            // Se ejecuta la actualización de los datos en la BD
+            registro.executeUpdate();
+            
+        } catch (Exception e) {
+            // Retornamos el error que pueda llegar a atrapar el compilador
+            JOptionPane.showMessageDialog(null, e.getMessage().toString());
+        } finally {
+            // Desconectar de la BD
+            try {
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar la conexión: " + ex.getMessage());
+            }
+        }
+    }    
 
     // Método para mostrar el estatus de la transacción
     private boolean mostrarStatus() {
-        return this.estatus;
+        return this.estatus;        
     }
 
     // Getters y Setters
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
@@ -149,12 +164,12 @@ public class Transaccion {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Calendar getFecha() {
+        return fechaHora;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFecha(Calendar fecha) {
+        this.fechaHora = fecha;
     }
 
     public boolean isEstatus() {
@@ -165,11 +180,16 @@ public class Transaccion {
         this.estatus = estatus;
     }
 
-    // Método principal para probar la clase
-    public static void main(String[] args) {
-        // Crear una nueva transacción
-        //Transaccion transaccion = new Transaccion(100, new Date());
-        // Mostrar el estatus de la transacción
-        //System.out.println("Estatus de la transacción: " + transaccion.mostrarStatus());
-    }
-}
+//    // Método principal para probar la clase
+//    public static void main(String[] args) throws ClassNotFoundException {
+//        // Crear una nueva transacción
+//        Transaccion transaccion = new Transaccion(250.0, true);
+//        // Mostrar el estatus de la transacción
+////        transaccion.insertarTransaccion();
+//        
+//        CuentaDebito cuenta = new CuentaDebito("68842");
+//        transaccion.actualizarSaldo(cuenta);
+//        System.out.println("\n\nsaldo: " + cuenta.getSaldo("68842") +"\n\n");
+//        System.out.println("Estatus de la transacción: " + transaccion.mostrarStatus());
+//    }
+//}
