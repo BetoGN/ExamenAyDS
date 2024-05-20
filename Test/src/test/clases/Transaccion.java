@@ -30,17 +30,12 @@ public class Transaccion {
     public Transaccion(double cantidad, boolean tipo) {
         // Se obtiene la fecha y hora actual 
         Calendar fecha = Calendar.getInstance();
-        
         this.cantidad = cantidad;
         this.fechaHora = fecha;
         this.estatus = false;
         this.tipo = tipo;
-    }
-    
-    // Metodo para hacer el registro en la base de datos
-    public void insertarTransaccion() {
+
         // Se prepara el dato de fecha para insertar en la BD
-        Calendar fecha = this.fechaHora;
         int hora, minuto, segundo, mes, ano, dia;
     
         hora = fecha.get(Calendar.HOUR_OF_DAY);
@@ -115,7 +110,7 @@ public class Transaccion {
             // Consultar saldo actual de la cuenta
             String sql = "SELECT saldo FROM Cuenta WHERE numCuenta = ?";
             PreparedStatement registro = connect.prepareStatement(sql);
-            registro.setString(1, cuenta.numCuenta);
+            registro.setString(1, cuenta.getNumCuenta());
             rs = registro.executeQuery();
             
             // Se guarda el saldo actual para operar con el 
@@ -135,7 +130,7 @@ public class Transaccion {
             sql = "UPDATE Cuenta SET saldo = ? WHERE numCuenta = ?";
             registro = connect.prepareStatement(sql);
             registro.setDouble(1, saldoNuevo);
-            registro.setString(2, cuenta.numCuenta);
+            registro.setString(2, cuenta.getNumCuenta());
 
             // Se ejecuta la actualización de los datos en la BD
             registro.executeUpdate();
@@ -185,16 +180,16 @@ public class Transaccion {
         this.estatus = estatus;
     }
 
-    // Método principal para probar la clase
-    public static void main(String[] args) throws ClassNotFoundException {
-        // Crear una nueva transacción
-        Transaccion transaccion = new Transaccion(110.0, true);
-        // Mostrar el estatus de la transacción
-        transaccion.insertarTransaccion();
-        
-        CuentaDebito cuenta = new CuentaDebito("68842");
-        transaccion.actualizarSaldo(cuenta);
-        System.out.println("\n\nsaldo: " + cuenta.getSaldo("68842") +"\n\n");
-        System.out.println("Estatus de la transacción: " + transaccion.mostrarStatus());
-    }
-}
+//    // Método principal para probar la clase
+//    public static void main(String[] args) throws ClassNotFoundException {
+//        // Crear una nueva transacción
+//        Transaccion transaccion = new Transaccion(250.0, true);
+//        // Mostrar el estatus de la transacción
+////        transaccion.insertarTransaccion();
+//        
+//        CuentaDebito cuenta = new CuentaDebito("68842");
+//        transaccion.actualizarSaldo(cuenta);
+//        System.out.println("\n\nsaldo: " + cuenta.getSaldo("68842") +"\n\n");
+//        System.out.println("Estatus de la transacción: " + transaccion.mostrarStatus());
+//    }
+//}

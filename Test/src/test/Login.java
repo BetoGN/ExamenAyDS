@@ -4,6 +4,8 @@
  */
 package test;
 
+import test.clases.Cliente;
+
 /**
  *
  * @author jarug
@@ -13,6 +15,8 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    Cliente cliente = new Cliente();
+    
     public Login() {
         initComponents();
     }
@@ -103,6 +107,7 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(tarjetaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tarjetaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -116,13 +121,24 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        //agregar numero tarjeta
+        String numeroTarjeta = tarjetaTF.getText();
+        this.cliente.insertarTarjeta(numeroTarjeta);
+        
+        //agregar nip
+        String nip = nipTF.getText();
+        this.cliente.insertarNip(nip);
+        
+        //validar para ver si pasa cliente a new Principal
         this.setVisible(false);
-        new Principal().setVisible(true);
+        new Principal(this.cliente).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tarjetaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarjetaTFActionPerformed
-        // TODO add your handling code here:
-        tarjetaTF.setText("hOLO");
+        String numeroTarjeta = tarjetaTF.getText();
+        this.cliente.insertarTarjeta(numeroTarjeta);
+        
     }//GEN-LAST:event_tarjetaTFActionPerformed
 
     private void nipTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nipTFActionPerformed

@@ -31,6 +31,7 @@ public class CuentaDebito {
     }
     
     
+
     public String obtenerNip(String numCuenta) throws ClassNotFoundException {
         ResultSet result = null;
         String nipCu="";
@@ -65,9 +66,7 @@ public class CuentaDebito {
        
        return nipCu;
     }
-    
-    
-    
+   
     public double getSaldo(String idCuenta) throws ClassNotFoundException {
         ResultSet resultado = null;
         double saldoTot = 0;
@@ -81,7 +80,7 @@ public class CuentaDebito {
 
             // Verificamos que la conexión sea exitosa
             if (connect != null) {
-//                System.out.println("Clase CuentaDebito se ha conectado a la base de datos");
+                System.out.println("Clase CuentaDebito se ha conectado a la base de datos");
             }
 
             // Consulta para la base de datos

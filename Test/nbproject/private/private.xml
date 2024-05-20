@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documents/Semestre%202024-2/AnalisisYDiseñoDeSistemas/Examen/Test/src/test/Retiro.java</file>
-            <file>file:/D:/Documents/Semestre%202024-2/AnalisisYDiseñoDeSistemas/Examen/Test/src/test/PagoTarjeta.java</file>
-            <file>file:/D:/Documents/Semestre%202024-2/AnalisisYDiseñoDeSistemas/Examen/Test/src/test/Test.java</file>
-            <file>file:/D:/Documents/Semestre%202024-2/AnalisisYDiseñoDeSistemas/Examen/Test/src/test/clases/TarjetaCredito.java</file>
+            <file>file:/D:/THE%20DHS%20MOTHERSHIP/ESCUELA/ESCOM/5to%20Semestre/ExamenAyDS/Test/src/test/clases/CuentaDebito.java</file>
+            <file>file:/D:/THE%20DHS%20MOTHERSHIP/ESCUELA/ESCOM/5to%20Semestre/ExamenAyDS/Test/src/test/clases/Transaccion.java</file>
+            <file>file:/D:/THE%20DHS%20MOTHERSHIP/ESCUELA/ESCOM/5to%20Semestre/ExamenAyDS/Test/src/test/clases/Cajero.java</file>
+            <file>file:/D:/THE%20DHS%20MOTHERSHIP/ESCUELA/ESCOM/5to%20Semestre/ExamenAyDS/Test/src/test/MetodosPrueba/Cajero_prueba.java</file>
         </group>
     </open-files>
 </project-private>
