@@ -9,8 +9,10 @@ import javax.swing.JOptionPane;
 public class Cajero {
     int id_cajero;
     
+    String currentDir = System.getProperty("user.dir");    
+    String url = "jdbc:sqlite:"+currentDir+"/src/db/Examen.db";
     //Definimos la dirección en la cuál se encuentra la base de datos
-    String url = "jdbc:sqlite:D:\\THE DHS MOTHERSHIP\\ESCUELA\\ESCOM\\5to Semestre\\ExamenAyDS\\Test\\src\\db\\Examen.db";
+    //String url = "jdbc:sqlite:D:\\THE DHS MOTHERSHIP\\ESCUELA\\ESCOM\\5to Semestre\\ExamenAyDS\\Test\\src\\db\\Examen.db";
     //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
     Connection connect;
 

@@ -19,5 +19,7 @@ public class Cajero_prueba {
         
         Integer saldo = cajero1.consultarSaldo("18291");
         System.out.println(saldo);
+        
+        cajero1.obtenerDatosCliente(1);
     }
 }
