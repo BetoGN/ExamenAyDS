@@ -111,12 +111,13 @@ public class CuentaDebito {
      
     
     
-    
+    /*
     public static void main(String[] args) throws ClassNotFoundException {
         // Crear una nueva transacción
         CuentaDebito cuentDeb = new CuentaDebito("3");
         // Mostrar el estatus de la transacción
         System.out.println("Nip: " + cuentDeb.obtenerNip(cuentDeb.numCuenta));
     }
+    */
     
 }
