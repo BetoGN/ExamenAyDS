@@ -105,12 +105,6 @@ public class CuentaDebito {
     }
     return saldoTot;
 }
-
-    
-
-     
-    
-    
     /*
     public static void main(String[] args) throws ClassNotFoundException {
         // Crear una nueva transacción

@@ -1,6 +1,7 @@
 package test.MetodosPrueba;
 
 import test.clases.Cajero;
+import test.clases.Transaccion;
 
 public class Cajero_prueba {
     public static void main(String[] args) throws ClassNotFoundException {
@@ -20,6 +21,7 @@ public class Cajero_prueba {
         Integer saldo = cajero1.consultarSaldo("18291");
         System.out.println(saldo);
         
-        cajero1.obtenerDatosCliente(1);
+        //cajero1.obtenerDatosCliente(1);
+        
     }
 }
