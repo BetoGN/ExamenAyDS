@@ -1,7 +1,11 @@
 
 package test;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import test.clases.Cajero;
+import test.clases.CuentaDebito;
 
 /**
  *
@@ -9,13 +13,20 @@ import javax.swing.JOptionPane;
  */
 public class Retiro extends javax.swing.JFrame {
     double saldoActual;
+    CuentaDebito cuentaDe;
+    String numCuenta;
     /**
      * Creates new form Retiro
      */
-    public Retiro() {
+    
+    
+    
+    public Retiro(String numCuenta) throws ClassNotFoundException {
         initComponents();
-         
-        //saldoActual=consultarSaldo();
+        
+        this.numCuenta = numCuenta;
+        this.cuentaDe = new CuentaDebito(numCuenta);
+        this.saldoActual = cuentaDe.getSaldo(numCuenta);
         etiquetaSaldo.setText(String.valueOf(saldoActual));
     }
 
@@ -116,12 +127,16 @@ public class Retiro extends javax.swing.JFrame {
         if (cantidadRetiro > saldoActual){
             JOptionPane.showMessageDialog(null, "El saldo en la cuenta no es suficiente", "Alerta", JOptionPane.ERROR_MESSAGE); 
         }else{
-            if(cantidadRetiro<0){
-                JOptionPane.showMessageDialog(null, "Ingresa una cantidad válida", "Alerta", JOptionPane.ERROR_MESSAGE);
+            if(cantidadRetiro<100){
+                JOptionPane.showMessageDialog(null, "La cantidad mínima para retirar es de $100", "Alerta", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
             }else{
-            JOptionPane.showMessageDialog(null, "El saldo remanente es: "+(saldoActual-cantidadRetiro), "Alerta", JOptionPane.INFORMATION_MESSAGE); 
-               //Actualizar saldo en la base de datos 
+            Cajero caj = new Cajero(1);
+                try {
+                    caj.retirarEfectivo(numCuenta, cantidadRetiro);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Retiro.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } 
 
         }
@@ -158,7 +173,7 @@ public class Retiro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Retiro().setVisible(true);
+                //new Retiro().setVisible(true);
             }
         });
     }
