@@ -20,8 +20,8 @@ public class Transaccion {
     private boolean tipo;
     
     //Definimos la dirección en la cuál se encuentra la base de datos
-    String url = "jdbc:sqlite:C:\\Users\\abrah\\Documents\\0_Examen_ADS\\ExamenAyDS\\Test\\src\\db\\Examen.db";
-    
+    String url = "jdbc:sqlite:D:\\Documents\\Semestre 2024-2\\AnalisisYDiseñoDeSistemas\\Exam\\ExamenAyDS\\Test\\src\\db\\Examen.db";
+                             //"D:\Documents\Semestre 2024-2\AnalisisYDiseñoDeSistemas\Exam\ExamenAyDS\Test\src\db\Examen.db"
     //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
     Connection connect;
     
@@ -110,7 +110,7 @@ public class Transaccion {
             // Consultar saldo actual de la cuenta
             String sql = "SELECT saldo FROM Cuenta WHERE numCuenta = ?";
             PreparedStatement registro = connect.prepareStatement(sql);
-            registro.setString(1, cuenta.getNumCuenta());
+            registro.setString(1, cuenta.numCuenta);
             rs = registro.executeQuery();
             
             // Se guarda el saldo actual para operar con el 
@@ -130,7 +130,7 @@ public class Transaccion {
             sql = "UPDATE Cuenta SET saldo = ? WHERE numCuenta = ?";
             registro = connect.prepareStatement(sql);
             registro.setDouble(1, saldoNuevo);
-            registro.setString(2, cuenta.getNumCuenta());
+            registro.setString(2, cuenta.numCuenta);
 
             // Se ejecuta la actualización de los datos en la BD
             registro.executeUpdate();
@@ -179,6 +179,7 @@ public class Transaccion {
     public void setEstatus(boolean estatus) {
         this.estatus = estatus;
     }
+}
 
 //    // Método principal para probar la clase
 //    public static void main(String[] args) throws ClassNotFoundException {
