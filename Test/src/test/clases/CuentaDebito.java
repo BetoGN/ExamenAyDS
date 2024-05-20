@@ -5,156 +5,118 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 public class CuentaDebito {
-    private String numCuenta;
-    private Cliente cliente;
-    private String nip;
-    private double saldo;
+    String numCuenta;
+    //Cliente cliente; el Cliente será el que creé la instancia CuentaDebito
+    String nip;
+    double saldo;
+    TarjetaCredito tarjetaCred;
+    
+    //Definimos la dirección en la cuál se encuentra la base de datos
+    String url = "jdbc:sqlite:D:\\Documents\\Semestre 2024-2\\AnalisisYDiseñoDeSistemas\\Examen\\Test\\src\\db\\Examen.db";
+    //Creamos un objeto de conexión para más tarde establecer comunicación con la base de datos
+    Connection connect;
+    
+    
     
     // Constructor que solo recibe el numero de cuenta
-    public CuentaDebito(String numCuenta) {
+    public CuentaDebito(String numCuenta) throws ClassNotFoundException {
         this.numCuenta = numCuenta;
-        cargarDatosDeBaseDeDatos();
+        this.nip = obtenerNip(this.numCuenta);
+        
+        tarjetaCred = new TarjetaCredito(this.numCuenta);
+        this.saldo = getSaldo(this.numCuenta);
     }
     
-    private void cargarDatosDeBDD() {
-        String url = "???"; // URL
-        String usuario = " "; // USER
-        String pass = " "; 
+    
+    private String obtenerNip(String numCuenta) throws ClassNotFoundException {
+        ResultSet result = null;
+        String nipCu="";
 
+        // Cargamos dinámicamente la clase del driver para SQLite
+        Class.forName("org.sqlite.JDBC");
 
-        try (Connection conexion = DriverManager.getConnection(url, usuario, pass)) {
-            String sql = "SELECT * FROM cuentas_debito WHERE num_cuenta = ?";
-            try (PreparedStatement statement = conexion.prepareStatement(sql)) {
-                statement.setString(1, this.numCuenta);
-                ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
-                    // Obtener el cliente de la base de datos segun el ID almacenado en la tabla de cuentas
-                    this.cliente = obtenerClientePorId(resultSet.getInt("cliente_id"), conexion);
-                    this.nip = resultSet.getString("nip");
-                    this.saldo = resultSet.getDouble("saldo");
-                }
+        try{
+            // Establecemos conexión con la base de datos
+            connect = DriverManager.getConnection(url);
+            
+            // Verificamos que la conexión sea exitosa
+            if(connect != null){
+             System.out.println("Clase cuentaDebito se ha conectado a la base de datos");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Cliente obtenerClientePorId(int id, Connection conexion) throws SQLException {
-        Cliente cliente = null;
-        String sql = "SELECT * FROM clientes WHERE id = ?";
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                // Si se encuentra el cliente, se obtienen los datos de la fila
-                int clienteId = resultSet.getInt("id");
-                String nombre = resultSet.getString("nombre");
-                String apellido = resultSet.getString("apellido");
-                String direccion = resultSet.getString("direccion");
-                // Crear un objeto Cliente con los datos obtenidos de la base de datos
-                cliente = new Cliente(clienteId, nombre, apellido, direccion);
+        
+            // Creación de un objeto PreparedStatement que representa una sentencia SQL precompilada
+            PreparedStatement st = connect.prepareStatement("SELECT NIP from Cuenta "
+                                                                + "where idCuenta = '" +numCuenta+"'");
+            // Obtención de respuesta de SQL
+            result = st.executeQuery();
+            while(result.next()){
+                nipCu=result.getString("NIP");
             }
+            
+            // Imprimimos la fecha de expiración de la tarjeta
+            System.out.println("El NIP de la cuenta es: " + nipCu);
+            
+        } catch(Exception x){
+            JOptionPane.showMessageDialog(null, x.getMessage().toString());
         }
-        return cliente;
+       
+       return nipCu;
     }
+    
+    
+    
+    private double getSaldo(String idCuenta) throws ClassNotFoundException {
+    ResultSet resultado = null;
+    double saldoTot = 0;
 
-    public double mostrarSaldo() {
-        return saldo;
-    }
-
-    // Operaciones comunes
-    public boolean depositar(double monto) {
-        if (monto > 0) {
-            this.saldo += monto;
-            return true;
+    try {
+        // Cargamos dinámicamente la clase del driver para SQLite
+        Class.forName("org.sqlite.JDBC");
+        
+        // Establecemos conexión con la base de datos
+        connect = DriverManager.getConnection(url);
+        
+        // Verificamos que la conexión sea exitosa
+        if (connect != null) {
+            System.out.println("Clase CuentaDebito se ha conectado a la base de datos");
         }
-        return false;
-    }
-
-    public boolean retirar(double monto, String nip) {
-        if (monto > 0 && monto <= saldo && this.nip.equals(nip)) {
-            this.saldo -= monto;
-            return true;
+        
+        // Consulta para la base de datos
+        String sql = "SELECT saldo FROM Cuenta WHERE idCuenta = ?";
+        
+        // Creación de un objeto PreparedStatement que representa una sentencia SQL precompilada
+        PreparedStatement st = connect.prepareStatement(sql);
+        st.setString(1, idCuenta);
+       
+        // Obtención de respuesta de SQL
+        resultado = st.executeQuery();
+        while (resultado.next()) {
+            saldoTot = resultado.getDouble("saldo");
         }
-        return false;
+        
+        // Imprimimos el crédito total de la cuenta
+        System.out.println("El saldo total de la tarjeta es: " + String.valueOf(saldoTot));
+        
+    } catch (Exception x) {
+        JOptionPane.showMessageDialog(null, x.getMessage().toString());
     }
-
-    // Getters y setters para los atributos
-
-    public String getNumCuenta() {
-        return numCuenta;
-    }
-
-    public void setNumCuenta(String numCuenta) {
-        this.numCuenta = numCuenta;
-        cargarDatosDeBaseDeDatos(); // Recargar datos cuando se cambia el num de cuenta
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    // No se proporciona un getter para el NIP por razones de seguridad
-
-    public void setNip(String nip) {
-        this.nip = nip;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
+    return saldoTot;
 }
 
-public class CuentaDebitoDAO {
-    private Connection conexion;
+    
 
-    // Establece la conexion con la base de datos
-    public CuentaDebitoDAO(String url, String usuario, String pass) throws SQLException {
-        conexion = DriverManager.getConnection(url, usuario, pass);
+     
+    
+    
+    
+    public static void main(String[] args) throws ClassNotFoundException {
+        // Crear una nueva transacción
+        CuentaDebito cuentDeb = new CuentaDebito("3");
+        // Mostrar el estatus de la transacción
+        System.out.println("Nip: " + cuentDeb.obtenerNip(cuentDeb.numCuenta));
     }
-
-    // Cerrar la conexion
-    public void cerrarConexion() throws SQLException {
-        if (conexion != null) {
-            conexion.close();
-        }
-    }
-
-    // Insertar una nueva cuenta en la base de datos
-    public void insertarCuenta(CuentaDebito cuenta) throws SQLException {
-        String sql = "INSERT INTO cuentas_debito (num_cuenta, cliente_id, nip, saldo) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
-            statement.setString(1, cuenta.getNumCuenta());
-            statement.setInt(2, cuenta.getCliente().getId()); // Suponiendo que el cliente tiene un ID en la base de datos
-            statement.setString(3, cuenta.getNip());
-            statement.setDouble(4, cuenta.getSaldo());
-            statement.executeUpdate();
-        }
-    }
-
-    // Obtener todas las cuentas de la base de datos
-    public List<CuentaDebito> obtenerTodasLasCuentas() throws SQLException {
-        List<CuentaDebito> cuentas = new ArrayList<>();
-        String sql = "SELECT * FROM cuentas_debito";
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String numCuenta = resultSet.getString("num_cuenta");
-                // Crear cuenta solo con el num de cuenta
-                CuentaDebito cuenta = new CuentaDebito(numCuenta);
-                cuentas.add(cuenta);
-            }
-        }
-        return cuentas;
-    }
+    
 }
